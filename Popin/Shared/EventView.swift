@@ -9,7 +9,6 @@ struct EventView: View {
     let store: DemoStore
     var event = PopinEvent.sample
     var showsBackButton = false
-    @Environment(\.dismiss) private var dismiss
     var onCreate: (() -> Void)? = nil
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var sheet: EventSheet?
@@ -50,16 +49,12 @@ struct EventView: View {
             }
         }
         .background(PopinTheme.background.ignoresSafeArea())
-        .toolbar(.hidden, for: .navigationBar)
-        .toolbar(.visible, for: .tabBar, .bottomBar)
+        .navigationBarBackButtonHidden(!showsBackButton)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.visible, for: .navigationBar, .tabBar)
+        .toolbar(.hidden, for: .bottomBar)
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                if showsBackButton {
-                    Button("Invites", systemImage: "chevron.left") { dismiss() }
-                        .labelStyle(.iconOnly)
-                        .tint(.white)
-                }
-                Spacer()
+            ToolbarItemGroup(placement: .primaryAction) {
                 if let onCreate {
                     Button("Create event", systemImage: "plus", action: onCreate)
                         .labelStyle(.iconOnly)

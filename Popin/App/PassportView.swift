@@ -53,11 +53,11 @@ struct PassportView: View {
         .ignoresSafeArea(.container)
         .onChange(of: pageCount) { _, count in leaf = min(leaf, count - 1) }
         .background(PassportInk.paper.ignoresSafeArea())
-        .toolbar(.hidden, for: .navigationBar)
-        .toolbar(.visible, for: .tabBar, .bottomBar)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.visible, for: .navigationBar, .tabBar)
+        .toolbar(.hidden, for: .bottomBar)
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Spacer()
+            ToolbarItemGroup(placement: .primaryAction) {
                 Menu {
                     Menu("Preview stamps", systemImage: "sparkles") {
                         ForEach(store.events) { event in

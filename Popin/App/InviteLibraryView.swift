@@ -9,7 +9,6 @@ struct InviteLibraryView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                PopinWordmark()
                 HStack(alignment: .firstTextBaseline) {
                     Text("Invites")
                         .font(.system(.largeTitle, design: .rounded, weight: .bold))
@@ -57,11 +56,17 @@ struct InviteLibraryView: View {
             .frame(maxWidth: .infinity)
         }
         .background(PopinTheme.background.ignoresSafeArea())
-        .toolbar(.hidden, for: .navigationBar)
-        .toolbar(.visible, for: .tabBar, .bottomBar)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.visible, for: .navigationBar, .tabBar)
+        .toolbar(.hidden, for: .bottomBar)
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Spacer()
+            if #available(iOS 26.0, *) {
+                ToolbarItem(placement: .topBarLeading) { PopinWordmark() }
+                    .sharedBackgroundVisibility(.hidden)
+            } else {
+                ToolbarItem(placement: .topBarLeading) { PopinWordmark() }
+            }
+            ToolbarItemGroup(placement: .primaryAction) {
                 Button("Create event", systemImage: "plus", action: onCreate)
                     .labelStyle(.iconOnly)
                     .tint(.white)
